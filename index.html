@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Media Studio Pro | Trích xuất & Nhân bản Giọng nói</title>
+    <title>AI Media Studio Pro | Trích xuất & Nhân bản</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,47 +23,18 @@
     </script>
     <style>
         body { background-color: #0f172a; color: #f8fafc; overflow-x: hidden; }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .glass-header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-header { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .text-gradient {
-            background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .btn-gradient {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-gradient:hover {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-        }
-        .tab-active {
-            background: rgba(99, 102, 241, 0.15);
-            color: #818cf8 !important;
-            border-color: #818cf8 !important;
-        }
+        .text-gradient { background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-gradient { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); transition: all 0.3s ease; }
+        .btn-gradient:hover { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
+        .tab-active { background: rgba(99, 102, 241, 0.15); color: #818cf8 !important; border-color: #818cf8 !important; }
         .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .bg-mesh {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
-        }
+        .bg-mesh { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%); }
     </style>
 </head>
 <body class="antialiased selection:bg-primary-500 selection:text-white">
@@ -79,9 +50,17 @@
                 </div>
                 <h1 class="font-bold text-lg md:text-xl tracking-wide text-white">AI Media <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Studio Pro</span></h1>
             </div>
-            <button onclick="toggleSettings()" class="text-slate-400 hover:text-white px-3 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium hover:bg-slate-800">
-                <i class="fa-solid fa-sliders"></i> <span class="hidden sm:inline">Cấu hình</span>
-            </button>
+            
+            <div class="flex items-center gap-2 md:gap-4">
+                <div id="apiStatusBadge" class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border">
+                    <div id="apiStatusDot" class="w-2 h-2 rounded-full"></div>
+                    <span id="apiStatusText">Kiểm tra API...</span>
+                </div>
+
+                <button onclick="toggleSettings()" class="text-slate-400 hover:text-white px-3 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium hover:bg-slate-800">
+                    <i class="fa-solid fa-sliders"></i> <span class="hidden sm:inline">Cấu hình</span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -93,13 +72,13 @@
                 Hệ thống <span class="text-gradient">AI Đa Năng</span>
             </h2>
             <p class="text-slate-400 max-w-2xl mx-auto text-xs md:text-base leading-relaxed px-4">
-                Trích xuất văn bản từ phương tiện, cấu trúc lại câu từ và nhân bản giọng nói trực tiếp bằng AI công nghệ cao.
+                Trích xuất văn bản từ phương tiện, cấu trúc lại câu từ và nhân bản giọng nói trực tiếp.
             </p>
         </div>
 
         <div class="glass-panel rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-slate-700">
             
-            <!-- Sidebar Navigation (Responsive Grid on Mobile) -->
+            <!-- Sidebar Navigation (Lưới 2x2 cho Mobile) -->
             <div class="w-full md:w-64 bg-slate-850/50 border-b md:border-b-0 md:border-r border-slate-700/50 p-4 grid grid-cols-2 md:flex md:flex-col gap-2">
                 <button onclick="switchTab('upload')" id="tab-btn-upload" class="tab-btn w-full flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 md:gap-3 px-2 md:px-4 py-3 rounded-xl text-center md:text-left font-medium text-slate-300 hover:bg-slate-800 border-2 md:border-0 md:border-l-3 border-transparent md:border-transparent tab-active text-xs md:text-base">
                     <i class="fa-solid fa-cloud-arrow-up text-lg md:text-base md:w-5 text-indigo-400"></i> <span class="truncate">Trích xuất File</span>
@@ -126,12 +105,13 @@
                     </div>
                     
                     <div id="dropZone" class="border-2 border-dashed border-slate-600 bg-slate-800/30 rounded-2xl p-8 md:p-10 flex flex-col items-center justify-center text-center hover:border-indigo-500 hover:bg-slate-800/50 transition-all cursor-pointer relative mb-6 group">
-                        <input type="file" id="fileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="video/*,audio/*">
+                        <!-- Mở rộng nhận diện mọi định dạng cho Safari/iPhone -->
+                        <input type="file" id="fileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="audio/*, video/*, .mp3, .wav, .m4a, .mp4, .mov, audio/mpeg, audio/wav, audio/x-m4a, video/mp4">
                         <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg border border-slate-700">
                             <i class="fa-solid fa-photo-film text-xl md:text-2xl text-indigo-400"></i>
                         </div>
                         <p class="font-medium text-slate-200 text-base md:text-lg mb-1">Kéo thả file vào đây</p>
-                        <p class="text-slate-500 text-xs md:text-sm">Hỗ trợ MP4, MP3, WAV, M4A...</p>
+                        <p class="text-slate-500 text-xs md:text-sm">Hỗ trợ MP4, MP3, WAV, M4A... (Tối ưu dưới 20MB)</p>
                         <div id="fileSelectedName" class="mt-4 px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg text-sm font-medium hidden flex items-center gap-2 max-w-full truncate"></div>
                     </div>
 
@@ -203,7 +183,7 @@
                                     </div>
                                 </div>
                                 <label class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-semibold cursor-pointer transition-colors flex-shrink-0 text-center">
-                                    Chọn file <input type="file" id="voiceFileInput" class="hidden" accept="audio/*">
+                                    Chọn file <input type="file" id="voiceFileInput" class="hidden" accept="audio/*, .mp3, .wav, .m4a">
                                 </label>
                             </div>
                         </div>
@@ -220,13 +200,13 @@
                     </button>
                 </div>
 
-                <!-- Loading State (Overlay) -->
+                <!-- Loading State -->
                 <div id="loadingState" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-10 hidden flex-col items-center justify-center rounded-2xl md:rounded-l-none md:rounded-r-2xl">
                     <div class="relative w-16 h-16 mb-4">
                         <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full"></div>
                         <div class="absolute inset-0 border-4 border-indigo-500 rounded-full border-t-transparent animate-spin"></div>
                     </div>
-                    <p id="loadingText" class="text-indigo-300 font-medium tracking-wide animate-pulse text-center px-4">Đang khởi tạo hệ thống AI...</p>
+                    <p id="loadingText" class="text-indigo-300 font-medium tracking-wide animate-pulse text-center px-4">Đang xử lý dữ liệu...</p>
                 </div>
 
             </div>
@@ -261,27 +241,23 @@
     <div id="settingsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
         <div id="settingsContent" class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300">
             <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-850">
-                <h3 class="font-semibold text-lg text-white"><i class="fa-solid fa-sliders text-indigo-400 mr-2"></i>Cấu hình Mở rộng</h3>
+                <h3 class="font-semibold text-lg text-white"><i class="fa-solid fa-sliders text-indigo-400 mr-2"></i> Cài đặt AI & Máy chủ</h3>
                 <button onclick="toggleSettings()" class="text-slate-500 hover:text-white transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="p-6 space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Google Gemini API Key (Bắt đầu bằng AIza hoặc AQ.)</label>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Google Gemini API Key</label>
                     <input type="password" id="cfgApiKey" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 text-sm outline-none font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                    <p class="text-xs text-slate-500 mt-1">Lấy key miễn phí tại <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-indigo-400 hover:underline">Google AI Studio</a></p>
+                    <p class="text-xs text-slate-500 mt-1">Hỗ trợ cả chuẩn cũ (AIza...) và chuẩn mới (AQ...)</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Backend Server URL</label>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Máy chủ tải Link MXH (Backend)</label>
                     <input type="text" id="cfgBackend" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 text-sm outline-none font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                </div>
-                <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg flex gap-3 text-sm text-amber-200">
-                    <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
-                    <p>Hệ thống mặc định sử dụng model <strong>Gemini 3.1 Flash Lite</strong> để tối ưu tốc độ xử lý.</p>
                 </div>
             </div>
             <div class="px-6 py-4 bg-slate-850 flex justify-end gap-3 border-t border-slate-800">
                 <button onclick="toggleSettings()" class="px-5 py-2 font-medium text-slate-400 hover:text-white transition-colors">Đóng</button>
-                <button onclick="saveSettings()" class="px-5 py-2 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow-lg transition-colors">Lưu lại</button>
+                <button onclick="saveSettings()" class="px-5 py-2 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow-lg transition-colors">Lưu hệ thống</button>
             </div>
         </div>
     </div>
@@ -289,62 +265,59 @@
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
-        // CẤU HÌNH MẶC ĐỊNH
+        // Cấu hình cứng để hệ thống tự động chạy
         const DEFAULT_BACKEND = "https://audio-iyda.onrender.com";
-        const DEFAULT_API_KEY = "AQ.Ab8RN6JXjb0taGj8egmnwUq9jT0-iBxftf6JCmYwvP-83pL0aw"; // Khóa chuẩn định dạng mới của Google
         const DEFAULT_MODEL = "gemini-3.1-flash-lite";
+        const HARDCODED_API_KEY = "AQ.Ab8RN6IbTx1ZKMgGJQAUxsSX_uyVPK0OCUzsmx3D6SdwW_9Xdg";
+
+        // Ép hệ thống dùng khóa mới nhất của bạn (xóa sạch dữ liệu cũ)
+        localStorage.setItem('gemini_api_key_v7', HARDCODED_API_KEY);
+        localStorage.setItem('backend_url_v7', DEFAULT_BACKEND);
 
         let currentFile = null;
         let currentVoiceFile = null;
         let isProcessing = false;
 
-        // Hàm kiểm tra API Key (Đã cập nhật để chấp nhận cả khóa cũ 'AIza' và khóa mới 'AQ.')
-        function validateApiKey(key) {
-            if (!key || key.trim() === "") {
-                showToast("Vui lòng nhập API Key!", "error");
-                return false;
+        function getActiveApiKey() { return localStorage.getItem('gemini_api_key_v7'); }
+        function getBackendUrl() { return localStorage.getItem('backend_url_v7'); }
+
+        function checkApiKeyStatus() {
+            const key = getActiveApiKey();
+            const badge = document.getElementById('apiStatusBadge');
+            const dot = document.getElementById('apiStatusDot');
+            const text = document.getElementById('apiStatusText');
+            
+            badge.classList.remove('hidden');
+            if (!key) {
+                badge.className = "hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-amber-500/30 bg-amber-500/10 text-amber-400";
+                dot.className = "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+                text.innerText = "Chưa có API Key";
+            } else {
+                badge.className = "hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-emerald-500/30 bg-emerald-500/10 text-emerald-400";
+                dot.className = "w-2 h-2 rounded-full bg-emerald-500";
+                text.innerText = "API Sẵn sàng";
             }
-            if (!key.startsWith("AIza") && !key.startsWith("AQ.")) {
-                showToast("CẢNH BÁO: API Key có vẻ không đúng định dạng của Google AI Studio!", "warning");
-                // Vẫn cho qua để Google tự quyết định
-            }
-            return true;
         }
 
-        function getSetting(key, defaultValue) {
-            return localStorage.getItem(key) || defaultValue;
-        }
-
-        // Lấy API key đang dùng (Ưu tiên key trong LocalStorage, nếu không có thì lấy mặc định)
-        function getActiveApiKey() {
-            return getSetting('gemini_api_key', DEFAULT_API_KEY);
-        }
+        window.onload = checkApiKeyStatus;
 
         function switchTab(tabId) {
             if (isProcessing) return showToast("Hệ thống đang xử lý, vui lòng đợi...", "warning");
-            
             ['upload', 'link', 'rewrite', 'clone'].forEach(id => {
                 document.getElementById(`tab-content-${id}`).classList.add('hidden');
                 let btn = document.getElementById(`tab-btn-${id}`);
-                // Bỏ style active
                 btn.className = btn.className.replace('tab-active', '').replace('border-indigo-500', 'border-transparent');
                 btn.classList.add('border-transparent');
-                
-                // Điều chỉnh màu icon khi không active
                 let icon = btn.querySelector('i');
                 if(icon) icon.classList.replace('text-indigo-500', 'text-slate-400');
             });
-
             document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
             let activeBtn = document.getElementById(`tab-btn-${tabId}`);
-            
-            // Cập nhật viền cho trạng thái Active
             if(window.innerWidth < 768) {
                 activeBtn.className = activeBtn.className.replace('border-transparent', 'border-indigo-500');
             } else {
                 activeBtn.classList.add('border-l-3', 'border-indigo-500');
             }
-            
             activeBtn.classList.add('tab-active');
             document.getElementById('resultSection').classList.add('hidden');
         }
@@ -354,9 +327,8 @@
 
         function toggleSettings() {
             if (modal.classList.contains('hidden')) {
-                document.getElementById('cfgBackend').value = getSetting('backend_url', DEFAULT_BACKEND);
-                document.getElementById('cfgApiKey').value = getSetting('gemini_api_key', DEFAULT_API_KEY);
-                
+                document.getElementById('cfgBackend').value = getBackendUrl();
+                document.getElementById('cfgApiKey').value = getActiveApiKey();
                 modal.classList.remove('hidden');
                 setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
             } else {
@@ -370,11 +342,12 @@
             if(backend.endsWith('/')) backend = backend.slice(0, -1);
             let apiKey = document.getElementById('cfgApiKey').value.trim();
             
-            localStorage.setItem('backend_url', backend);
-            localStorage.setItem('gemini_api_key', apiKey);
+            localStorage.setItem('backend_url_v7', backend);
+            localStorage.setItem('gemini_api_key_v7', apiKey);
             
+            checkApiKeyStatus();
             toggleSettings();
-            showToast("Đã lưu cấu hình thành công!", "success");
+            showToast("Đã lưu cấu hình mới!", "success");
         }
 
         // File upload listeners
@@ -396,7 +369,6 @@
             fileSelectedName.classList.remove('hidden');
         }
 
-        // Voice file listener
         const voiceFileInput = document.getElementById('voiceFileInput');
         const voiceFileName = document.getElementById('voiceFileName');
         voiceFileInput.addEventListener('change', (e) => {
@@ -412,32 +384,27 @@
             const stateDiv = document.getElementById('loadingState');
             const txt = document.getElementById('loadingText');
             if (active) {
-                stateDiv.classList.remove('hidden');
-                stateDiv.classList.add('flex');
+                stateDiv.classList.remove('hidden'); stateDiv.classList.add('flex');
                 txt.innerText = text;
                 document.getElementById('resultSection').classList.add('hidden');
             } else {
-                stateDiv.classList.add('hidden');
-                stateDiv.classList.remove('flex');
+                stateDiv.classList.add('hidden'); stateDiv.classList.remove('flex');
             }
         }
 
         function showResult(text) {
             document.getElementById('resultText').value = text;
             document.getElementById('resultSection').classList.remove('hidden');
-            // Scroll to result on mobile
-            setTimeout(() => {
-                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+            setTimeout(() => { document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
         }
 
+        // ====== LÕI XỬ LÝ MỚI SỬ DỤNG HEADER x-goog-api-key ĐỂ HỖ TRỢ KHÓA AQ. ======
         async function processFile() {
             if (!currentFile) return showToast("Vui lòng chọn file trước!", "warning");
-            
             const apiKey = getActiveApiKey();
-            if (!validateApiKey(apiKey)) return;
-
-            setLoading(true, "Đang xử lý âm thanh với Gemini 3.1 Flash Lite...");
+            if (!apiKey) return showToast("Không tìm thấy API Key!", "error");
+            
+            setLoading(true, "Đang phân tích âm thanh bằng Gemini 3.1...");
             try {
                 let base64Data, mimeType;
                 if (currentFile.type.startsWith('video/')) {
@@ -447,19 +414,32 @@
                     base64Data = await fileToBase64(currentFile); mimeType = currentFile.type;
                 }
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${DEFAULT_MODEL}:generateContent?key=${apiKey}`, {
+                // GỬI QUA HEADER: Chìa khóa để khắc phục lỗi OAuth
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${DEFAULT_MODEL}:generateContent`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: "Hãy nghe và chuyển đoạn âm thanh này thành văn bản tiếng Việt chi tiết." }, { inlineData: { mimeType: mimeType, data: base64Data } }] }] })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': apiKey
+                    },
+                    body: JSON.stringify({ 
+                        contents: [{ 
+                            parts: [
+                                { text: "Hãy nghe và chuyển đoạn âm thanh này thành văn bản tiếng Việt chi tiết." }, 
+                                { inlineData: { mimeType: mimeType, data: base64Data } }
+                            ] 
+                        }] 
+                    })
                 });
                 
                 const data = await response.json();
+                
                 if (data.error) throw new Error(data.error.message);
                 
                 showResult(data.candidates[0].content.parts[0].text);
                 showToast("Phân tích hoàn tất!", "success");
             } catch (error) {
-                showToast("Lỗi: " + error.message, "error");
+                showToast("Lỗi xử lý: " + error.message, "error");
+                console.error(error);
             } finally { setLoading(false); }
         }
 
@@ -468,10 +448,9 @@
             if (!url) return showToast("Vui lòng nhập đường link!", "warning");
             
             const apiKey = getActiveApiKey();
-            if (!validateApiKey(apiKey)) return;
-
-            const backend = getSetting('backend_url', DEFAULT_BACKEND);
-            setLoading(true, "Máy chủ đang tải xuống từ MXH...");
+            const backend = getBackendUrl();
+            
+            setLoading(true, "Máy chủ đang trích xuất Media...");
             try {
                 const response = await fetch(`${backend}/api/process-link`, {
                     method: 'POST',
@@ -482,9 +461,9 @@
                 if (response.ok && data.success) {
                     showResult(data.text);
                     showToast("Trích xuất thành công!", "success");
-                } else { throw new Error(data.detail || "Không thể xử lý."); }
+                } else { throw new Error(data.detail || "Không thể xử lý từ máy chủ."); }
             } catch (error) {
-                showToast("Lỗi: " + error.message, "error");
+                showToast("Lỗi Server: " + error.message, "error");
             } finally { setLoading(false); }
         }
 
@@ -493,35 +472,37 @@
             if (!text) return showToast("Vui lòng nhập văn bản!", "warning");
             
             const apiKey = getActiveApiKey();
-            if (!validateApiKey(apiKey)) return;
-
-            setLoading(true, "AI đang tối ưu hóa văn bản...");
+            setLoading(true, "AI đang nâng cấp văn bản...");
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${DEFAULT_MODEL}:generateContent?key=${apiKey}`, {
+                // Đã cập nhật Prompt Yêu cầu AI CHỈ TRẢ VỀ kết quả, không thêm mô tả
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${DEFAULT_MODEL}:generateContent`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: "Viết lại đoạn văn sau cho trôi chảy, sửa lỗi chính tả, giữ nguyên ý nghĩa gốc:\n\n" + text }] }] })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': apiKey
+                    },
+                    body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: "Viết lại đoạn văn sau cho trôi chảy, sửa lỗi chính tả, giữ nguyên ý nghĩa gốc. LƯU Ý QUAN TRỌNG: Chỉ trả về duy nhất kết quả đã viết lại, tuyệt đối KHÔNG thêm câu chào hỏi, KHÔNG giải thích, KHÔNG chú thích những thay đổi:\n\n" + text }] }] })
                 });
                 const data = await response.json();
                 if (data.error) throw new Error(data.error.message);
+                
                 showResult(data.candidates[0].content.parts[0].text);
                 showToast("Nâng cấp thành công!", "success");
             } catch (error) {
-                showToast("Lỗi: " + error.message, "error");
+                showToast("Lỗi xử lý: " + error.message, "error");
             } finally { setLoading(false); }
         }
 
         async function processVoiceClone() {
             const text = document.getElementById('cloneTextInput').value.trim();
             if (!currentVoiceFile) return showToast("Vui lòng tải lên file mẫu giọng nói!", "warning");
-            if (!text) return showToast("Vui lòng nhập nội dung văn bản cần đọc!", "warning");
+            if (!text) return showToast("Vui lòng nhập nội dung cần đọc!", "warning");
 
-            setLoading(true, "Đang phân tích mẫu giọng và tổng hợp âm thanh...");
-            // (Mô phỏng xử lý vì Voice Clone cần API trả phí của ElevenLabs. Google AI hiện tại chưa hỗ trợ API Voice Clone trực tiếp qua JS).
+            setLoading(true, "Đang đồng bộ hóa mẫu giọng...");
             setTimeout(() => {
                 setLoading(false);
-                showResult(`[CHỨC NĂNG VOICE CLONE: Phiên bản Web HTML hiện tại chỉ hỗ trợ mô phỏng do giới hạn của Google API]\n\nNội dung bạn muốn tổng hợp:\n"${text}"`);
-                showToast("Trích xuất văn bản nhân bản hoàn tất!", "success");
+                showResult(`[CHỨC NĂNG VOICE CLONE: Phiên bản Web HTML hiện tại chỉ hỗ trợ mô phỏng do giới hạn của Google API]\n\nNội dung bạn muốn tổng hợp:\n"${text}"\n\n(Để chức năng này hoạt động thực sự, cần nâng cấp kết nối với ElevenLabs API).`);
+                showToast("Đã ghi nhận yêu cầu Voice Clone!", "success");
             }, 2000);
         }
 
@@ -585,9 +566,7 @@
                 if (!text) return;
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'vi-VN';
-                utterance.onend = () => {
-                    btn.innerHTML = '<i class="fa-solid fa-volume-high text-blue-400"></i> Nghe';
-                };
+                utterance.onend = () => { btn.innerHTML = '<i class="fa-solid fa-volume-high text-blue-400"></i> Nghe'; };
                 synth.speak(utterance);
                 btn.innerHTML = '<i class="fa-solid fa-stop text-red-400"></i> Dừng';
             }
@@ -598,15 +577,12 @@
             if (!text) return;
             showToast("Đang chuẩn bị file MP3...", "info");
             try {
-                // Sử dụng API Text-to-Speech miễn phí của Google Translate để tạo mp3
                 const res = await fetch(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=vi&q=${encodeURIComponent(text.slice(0, 200))}`);
                 const blob = await res.blob();
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a'); a.href = url; a.download = 'Audio_Result.mp3'; a.click();
                 showToast("Đã tải xuống file MP3!", "success");
-            } catch(e) {
-                showToast("Lỗi tải xuống audio.", "error");
-            }
+            } catch(e) { showToast("Lỗi tải xuống audio.", "error"); }
         }
 
         function showToast(message, type = "info") {
@@ -622,10 +598,7 @@
             container.appendChild(toast);
             
             setTimeout(() => { toast.classList.remove('translate-x-10', 'opacity-0'); }, 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-x-10');
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
+            setTimeout(() => { toast.classList.add('opacity-0', 'translate-x-10'); setTimeout(() => toast.remove(), 300); }, 5000);
         }
     </script>
 </body>

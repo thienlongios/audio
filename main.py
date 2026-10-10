@@ -38,6 +38,8 @@ async def process_link(request: LinkRequest):
             'outtmpl': temp_filename + '.%(ext)s', # Định dạng file theo đúng chuẩn tải về
             'noplaylist': True,              # Không tải cả danh sách phát
             'quiet': True,
+            # THÊM DÒNG DƯỚI ĐÂY ĐỂ VƯỢT TƯỜNG LỬA YOUTUBE
+            'extractor_args': {'youtube': {'player_client': ['android', 'web']}}
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:

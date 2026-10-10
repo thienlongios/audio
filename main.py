@@ -38,8 +38,18 @@ async def process_link(request: LinkRequest):
             'outtmpl': temp_filename + '.%(ext)s', # Định dạng file theo đúng chuẩn tải về
             'noplaylist': True,              # Không tải cả danh sách phát
             'quiet': True,
-            # THÊM DÒNG DƯỚI ĐÂY ĐỂ VƯỢT TƯỜNG LỬA YOUTUBE
-            'extractor_args': {'youtube': {'player_client': ['android', 'web']}}
+            
+            # --- BẮT ĐẦU CẤU HÌNH NGỤY TRANG MẠNH NHẤT ---
+            'http_headers': {
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1',
+            },
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['ios', 'android', 'tv'],
+                    'player_skip': ['webpage']
+                }
+            }
+            # --- KẾT THÚC CẤU HÌNH NGỤY TRANG ---
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
